@@ -515,7 +515,7 @@ class OpenIDConnect(object):
                 missing_padding = 4 - len(tkn) % 4
                 if missing_padding:
                     tkn += '=' * missing_padding
-                access_token = json.loads(b64decode(tkn))
+                access_token = json.loads(b64decode(tkn, altchars='-_'))
                 if role in access_token['resource_access'][client]['roles']:
                     return view_func(*args, **kwargs)
                 else:
