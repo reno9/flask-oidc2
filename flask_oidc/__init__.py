@@ -511,7 +511,10 @@ class OpenIDConnect(object):
         def wrapper(view_func):
             @wraps(view_func)
             def decorated(*args, **kwargs):
-                pre, tkn, post = self.get_access_token().split('.')
+                try:
+                    pre, tkn, post = self.get_access_token().split('.')
+                except:
+                    return self.redirect_to_auth_server(request.url)
                 missing_padding = 4 - len(tkn) % 4
                 if missing_padding:
                     tkn += '=' * missing_padding
